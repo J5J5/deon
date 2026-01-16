@@ -3,175 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>شركة الفهد - النسخة المطورة</title>
+    <title>شركة الفهد - نظام الديون</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2c3e50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/552/552791.png">
+
     <style>
         :root {
-            --bg-color: #f0f2f5;
-            --card-bg: #ffffff;
-            --text-color: #1c1e21;
-            --primary: #2c3e50;
-            --accent: #3498db;
-            --success: #27ae60;
-            --danger: #e74c3c;
-            --border: #e4e6eb;
+            --bg-color: #f0f2f5; --card-bg: #ffffff; --text-color: #1c1e21;
+            --primary: #2c3e50; --accent: #3498db; --success: #27ae60;
+            --danger: #e74c3c; --border: #e4e6eb;
         }
-
         [data-theme="dark"] {
-            --bg-color: #18191a;
-            --card-bg: #242526;
-            --text-color: #e4e6eb;
-            --primary: #ffffff;
-            --border: #3e4042;
+            --bg-color: #18191a; --card-bg: #242526; --text-color: #e4e6eb;
+            --primary: #ffffff; --border: #3e4042;
         }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0; background-color: var(--bg-color);
-            color: var(--text-color); transition: 0.3s;
-            padding-bottom: 80px; /* مساحة للقائمة السفلية في الموبايل */
+            font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; 
+            background: var(--bg-color); color: var(--text-color); transition: 0.3s;
+            padding-bottom: 70px;
         }
 
-        /* القائمة الجانبية (للكومبيوتر فقط) */
+        /*Sidebar for PC*/
         .sidebar {
             width: 240px; background: var(--primary); color: white;
             position: fixed; height: 100%; right: 0; top: 0; z-index: 1000;
         }
-
-        .sidebar-header { padding: 25px; text-align: center; font-size: 1.4rem; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
-        .sidebar-menu li {
-            padding: 18px 25px; cursor: pointer; transition: 0.2s;
-            display: flex; align-items: center; gap: 12px; font-size: 1.1rem;
-        }
+        .sidebar-header { padding: 25px; text-align: center; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-menu { list-style: none; padding: 0; }
+        .sidebar-menu li { padding: 18px 25px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
         .sidebar-menu li:hover, .sidebar-menu li.active { background: var(--accent); }
 
-        /* القائمة السفلية (للموبايل فقط) */
+        /*Bottom Nav for Mobile*/
         .mobile-nav {
             display: none; position: fixed; bottom: 0; width: 100%;
             background: var(--card-bg); border-top: 1px solid var(--border);
             justify-content: space-around; padding: 10px 0; z-index: 2000;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
-        .mobile-nav-item { text-align: center; font-size: 0.8rem; color: var(--text-color); cursor: pointer; flex: 1; }
-        .mobile-nav-item.active { color: var(--accent); font-weight: bold; }
-        .mobile-nav-item span { display: block; font-size: 1.5rem; }
+        .nav-item { text-align: center; font-size: 0.75rem; flex: 1; cursor: pointer; color: var(--text-color); opacity: 0.6; }
+        .nav-item.active { opacity: 1; color: var(--accent); font-weight: bold; }
+        .nav-item span { display: block; font-size: 1.4rem; }
 
-        /* المحتوى الرئيسي */
-        .main-content { margin-right: 240px; padding: 20px; max-width: 1000px; }
+        .main-content { margin-right: 240px; padding: 20px; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .stat-card { background: var(--card-bg); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--border); }
-        .stat-card h4 { margin: 0; font-size: 0.9rem; opacity: 0.7; }
-        .stat-card p { font-size: 1.2rem; font-weight: bold; margin: 5px 0 0; color: var(--accent); }
+        .stat-card p { font-size: 1.3rem; font-weight: bold; margin: 5px 0 0; color: var(--accent); }
 
-        .search-box {
-            width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 10px;
-            border: 1px solid var(--border); background: var(--card-bg); color: var(--text-color);
-            font-size: 1rem; outline: none;
-        }
-
+        .search-box { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-color); box-sizing: border-box; }
         .card { background: var(--card-bg); padding: 20px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 15px; }
-        .page { display: none; }
-        .page.active { display: block; }
-
-        /* تصميم الأزرار والجداول */
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-color); color: var(--text-color); }
-        button { padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .btn-main { background: var(--accent); color: white; width: 100%; }
         
-        table { width: 100%; border-collapse: collapse; }
-        th { background: var(--bg-color); padding: 12px; text-align: right; }
-        td { padding: 15px; border-bottom: 1px solid var(--border); }
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* تحويل الجدول لكروت في الموبايل */
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-color); color: var(--text-color); box-sizing: border-box; }
+        button { padding: 12px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-main { background: var(--accent); color: white; width: 100%; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: right; border-bottom: 1px solid var(--border); }
+
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .mobile-nav { display: flex; }
-            .main-content { margin-right: 0; padding: 15px; }
-            
+            .main-content { margin-right: 0; }
             table thead { display: none; }
-            table tr { display: block; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; padding: 10px; }
-            table td { display: flex; justify-content: space-between; align-items: center; border: none; padding: 8px 5px; }
+            table tr { display: block; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; padding: 10px; }
+            table td { display: flex; justify-content: space-between; border: none; padding: 8px 5px; }
             table td::before { content: attr(data-label); font-weight: bold; color: var(--accent); }
-            
-            .btn-theme { display: none; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .stat-card:first-child { grid-column: span 2; }
         }
 
-        /* الفاتورة */
         #invoice-print { display: none; }
         @media print {
             body * { visibility: hidden; }
             #invoice-print, #invoice-print * { visibility: visible; }
-            #invoice-print { display: block; position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
+            #invoice-print { display: block; position: absolute; left: 0; top: 0; width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <button class="btn-theme" onclick="toggleTheme()" style="position:fixed; left:20px; top:20px; z-index:3000;">🌓</button>
-
     <nav class="sidebar">
         <div class="sidebar-header">شركة الفهد 🐆</div>
         <ul class="sidebar-menu">
             <li class="active" onclick="showPage('addPage', this)"><span>➕</span> إضافة دين</li>
-            <li onclick="showPage('listPage', this)"><span>📋</span> الديون</li>
-            <li onclick="showPage('historyPage', this)"><span>🧾</span> الفواتير</li>
+            <li onclick="showPage('listPage', this)"><span>📋</span> الديون النشطة</li>
+            <li onclick="showPage('historyPage', this)"><span>🧾</span> سجل الفواتير</li>
             <li onclick="showPage('settingsPage', this)"><span>⚙️</span> الإعدادات</li>
         </ul>
     </nav>
 
     <nav class="mobile-nav">
-        <div class="mobile-nav-item active" onclick="showPage('addPage', this)"><span>➕</span>إضافة</div>
-        <div class="mobile-nav-item" onclick="showPage('listPage', this)"><span>📋</span>الديون</div>
-        <div class="mobile-nav-item" onclick="showPage('historyPage', this)"><span>🧾</span>الفواتير</div>
-        <div class="mobile-nav-item" onclick="showPage('settingsPage', this)"><span>⚙️</span>إعدادات</div>
+        <div class="nav-item active" onclick="showPage('addPage', this)"><span>➕</span>إضافة</div>
+        <div class="nav-item" onclick="showPage('listPage', this)"><span>📋</span>الديون</div>
+        <div class="nav-item" onclick="showPage('historyPage', this)"><span>🧾</span>الفواتير</div>
+        <div class="nav-item" onclick="showPage('settingsPage', this)"><span>⚙️</span>إعدادات</div>
     </nav>
 
     <main class="main-content">
         <div class="stats-grid">
-            <div class="stat-card"><h4>المتبقي الكلي</h4><p id="stat-remaining">0</p></div>
+            <div class="stat-card"><h4>المتبقي</h4><p id="stat-rem">0</p></div>
             <div class="stat-card"><h4>المستلم</h4><p id="stat-paid">0</p></div>
-            <div class="stat-card"><h4>عدد المدينين</h4><p id="stat-count">0</p></div>
         </div>
 
         <section id="addPage" class="page active">
             <div class="card">
                 <h3>تسجيل دين جديد</h3>
-                <input type="text" id="debtorName" placeholder="اسم الشخص (مثلاً: أبو أحمد)">
-                <input type="number" id="debtAmount" placeholder="المبلغ">
-                <button class="btn-main" onclick="addDebt()">حفظ البيانات</button>
+                <input type="text" id="debtName" placeholder="اسم المدين">
+                <input type="number" id="debtAmt" placeholder="المبلغ">
+                <button class="btn-main" onclick="addDebt()">حفظ في النظام</button>
             </div>
         </section>
 
         <section id="listPage" class="page">
-            <input type="text" class="search-box" id="searchDebts" placeholder="🔍 ابحث عن اسم..." onkeyup="filterDebts()">
-            <div id="debtContainer">
+            <input type="text" class="search-box" id="search" placeholder="🔍 بحث عن اسم الشخص..." onkeyup="filter()">
+            <div class="card">
                 <table>
-                    <thead><tr><th>الاسم</th><th>المبلغ</th><th>إجراء</th></tr></thead>
-                    <tbody id="debtTableBody"></tbody>
+                    <thead><tr><th>الاسم</th><th>المبلغ</th><th>الإجراء</th></tr></thead>
+                    <tbody id="debtTable"></tbody>
                 </table>
             </div>
         </section>
 
         <section id="historyPage" class="page">
-            <div id="historyContainer">
+            <div class="card">
                 <table>
                     <thead><tr><th>الفاتورة</th><th>الاسم</th><th>المبلغ</th><th>التاريخ</th></tr></thead>
-                    <tbody id="historyTableBody"></tbody>
+                    <tbody id="histTable"></tbody>
                 </table>
             </div>
         </section>
 
         <section id="settingsPage" class="page">
             <div class="card">
-                <h3>التحكم والنسخ</h3>
-                <button class="btn-main" style="background:#8e44ad; margin-bottom:10px" onclick="exportData()">تحميل نسخة احتياطية</button>
-                <button class="btn-main" style="background:#7f8c8d; margin-bottom:10px" onclick="document.getElementById('importFile').click()">استيراد بيانات</button>
-                <input type="file" id="importFile" style="display:none" onchange="importData(event)">
-                <button class="btn-main" onclick="toggleTheme()">تبديل وضع (ليل/نهار)</button>
-                <button class="btn-main" style="background:var(--danger); margin-top:30px" onclick="resetAllData()">🗑️ مسح النظام بالكامل</button>
+                <button class="btn-main" onclick="exportData()" style="background:#8e44ad">تصدير نسخة احتياطية</button>
+                <button class="btn-main" onclick="document.getElementById('fileIn').click()" style="background:#7f8c8d; margin-top:10px;">استيراد بيانات</button>
+                <input type="file" id="fileIn" style="display:none" onchange="importData(event)">
+                <button class="btn-main" onclick="toggleTheme()" style="margin-top:10px; background:#555">تبديل الثيم 🌓</button>
+                <button class="btn-main" onclick="resetAll()" style="background:var(--danger); margin-top:30px">🗑️ تصفير كل البيانات</button>
             </div>
         </section>
     </main>
@@ -179,60 +152,35 @@
     <div id="invoice-print">
         <h1 style="text-align:center">شركة الفهد</h1>
         <hr>
-        <p>رقم الفاتورة: <span id="inv-id"></span></p>
-        <p>الاسم: <span id="inv-name"></span></p>
-        <p>المبلغ: <span id="inv-amount"></span></p>
-        <p>التاريخ: <span id="inv-date"></span></p>
-        <h2 style="text-align:center; color:green">تم التسديد</h2>
+        <p>رقم الفاتورة: <span id="p-id"></span></p>
+        <p>الاسم: <span id="p-name"></span></p>
+        <p>المبلغ المسدد: <span id="p-amt"></span></p>
+        <p>التاريخ: <span id="p-date"></span></p>
+        <h2 style="text-align:center; color:green">✔ تم التسديد</h2>
     </div>
 
     <script>
-        let debts = JSON.parse(localStorage.getItem('fhd_debts')) || [];
-        let history = JSON.parse(localStorage.getItem('fhd_history')) || [];
-        let theme = localStorage.getItem('fhd_theme') || 'light';
-
+        let debts = JSON.parse(localStorage.getItem('f_debts')) || [];
+        let history = JSON.parse(localStorage.getItem('f_hist')) || [];
+        let theme = localStorage.getItem('f_theme') || 'light';
         document.documentElement.setAttribute('data-theme', theme);
-
-        function toggleTheme() {
-            theme = theme === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('fhd_theme', theme);
-        }
 
         function showPage(id, el) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            
-            // تحديث حالة الأزرار في الكومبيوتر والموبايل
-            document.querySelectorAll('.sidebar-menu li, .mobile-nav-item').forEach(li => li.classList.remove('active'));
-            
-            // ربط الضغط بين القائمتين
-            const index = Array.from(el.parentNode.children).indexOf(el);
-            document.querySelectorAll('.sidebar-menu li')[index].classList.add('active');
-            document.querySelectorAll('.mobile-nav-item')[index].classList.add('active');
-            
-            render();
-            updateStats();
-        }
-
-        function filterDebts() {
-            const query = document.getElementById('searchDebts').value.toLowerCase();
-            const rows = document.querySelectorAll('#debtTableBody tr');
-            rows.forEach(row => {
-                const name = row.cells[0].innerText.toLowerCase();
-                row.style.display = name.includes(query) ? '' : 'none';
-            });
+            document.querySelectorAll('.nav-item, .sidebar-menu li').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+            render(); updateStats();
         }
 
         function addDebt() {
-            const name = document.getElementById('debtorName').value;
-            const amount = parseFloat(document.getElementById('debtAmount').value);
-            if (name && amount > 0) {
-                debts.push({ id: Date.now(), name, amount });
-                save();
-                document.getElementById('debtorName').value = '';
-                document.getElementById('debtAmount').value = '';
-                alert("تم الحفظ");
+            const n = document.getElementById('debtName').value;
+            const a = parseFloat(document.getElementById('debtAmt').value);
+            if(n && a > 0) {
+                debts.push({id: Date.now(), name: n, amount: a});
+                document.getElementById('debtName').value = '';
+                document.getElementById('debtAmt').value = '';
+                save(); alert("تم الحفظ");
             }
         }
 
@@ -240,57 +188,55 @@
             const item = debts.find(d => d.id === id);
             let val = item.amount;
             if(!isFull) {
-                val = parseFloat(prompt("أدخل المبلغ المسدد:"));
+                val = parseFloat(prompt(`المبلغ الحالي ${item.amount}. أدخل المسدد:`));
                 if(!val || val > item.amount) return;
             }
-            history.push({ invId: "F-"+Math.floor(Math.random()*1000), name: item.name, amount: val, date: new Date().toLocaleDateString('ar-EG') });
+            history.push({invId: "INV-"+Math.floor(Math.random()*9000), name: item.name, amount: val, date: new Date().toLocaleString('ar-EG')});
             item.amount -= val;
             if(item.amount <= 0) debts = debts.filter(d => d.id !== id);
             save();
         }
 
-        function render() {
-            document.getElementById('debtTableBody').innerHTML = debts.map(d => `
-                <tr>
-                    <td data-label="الاسم">${d.name}</td>
-                    <td data-label="المبلغ" style="color:var(--danger); font-weight:bold;">${d.amount.toLocaleString()}</td>
-                    <td data-label="إجراء">
-                        <button style="background:var(--success); color:white; padding:5px 10px;" onclick="pay(${d.id}, true)">كامل</button>
-                        <button style="background:var(--warning); color:white; padding:5px 10px; margin-right:5px;" onclick="pay(${d.id}, false)">جزء</button>
-                    </td>
-                </tr>
-            `).join('');
+        function filter() {
+            const q = document.getElementById('search').value.toLowerCase();
+            const rows = document.querySelectorAll('#debtTable tr');
+            rows.forEach(r => r.style.display = r.cells[0].innerText.toLowerCase().includes(q) ? '' : 'none');
+        }
 
-            document.getElementById('historyTableBody').innerHTML = history.slice().reverse().map((h, i) => `
-                <tr>
-                    <td data-label="الفاتورة">${h.invId}</td>
-                    <td data-label="الاسم">${h.name}</td>
-                    <td data-label="المبلغ" style="color:var(--success)">${h.amount.toLocaleString()}</td>
-                    <td data-label="التاريخ">${h.date}</td>
-                </tr>
-            `).join('');
+        function render() {
+            document.getElementById('debtTable').innerHTML = debts.map(d => `
+                <tr><td data-label="الاسم">${d.name}</td><td data-label="المبلغ">${d.amount.toLocaleString()}</td>
+                <td data-label="إجراء"><button onclick="pay(${d.id}, true)" style="background:var(--success); color:white">كامل</button>
+                <button onclick="pay(${d.id}, false)" style="background:var(--warning); color:white">جزء</button></td></tr>`).join('');
+            
+            document.getElementById('histTable').innerHTML = history.slice().reverse().map((h, i) => `
+                <tr><td data-label="الفاتورة">${h.invId}</td><td data-label="الاسم">${h.name}</td>
+                <td data-label="المبلغ">${h.amount.toLocaleString()}</td><td data-label="التاريخ">${h.date}</td></tr>`).join('');
         }
 
         function updateStats() {
-            const rem = debts.reduce((s, d) => s + d.amount, 0);
-            const paid = history.reduce((s, h) => s + h.amount, 0);
-            document.getElementById('stat-remaining').innerText = rem.toLocaleString();
-            document.getElementById('stat-paid').innerText = paid.toLocaleString();
-            document.getElementById('stat-count').innerText = debts.length;
+            const r = debts.reduce((s, d) => s + d.amount, 0);
+            const p = history.reduce((s, h) => s + h.amount, 0);
+            document.getElementById('stat-rem').innerText = r.toLocaleString();
+            document.getElementById('stat-paid').innerText = p.toLocaleString();
         }
 
         function save() {
-            localStorage.setItem('fhd_debts', JSON.stringify(debts));
-            localStorage.setItem('fhd_history', JSON.stringify(history));
+            localStorage.setItem('f_debts', JSON.stringify(debts));
+            localStorage.setItem('f_hist', JSON.stringify(history));
             render(); updateStats();
+        }
+
+        function toggleTheme() {
+            theme = (theme === 'light') ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('f_theme', theme);
         }
 
         function exportData() {
             const blob = new Blob([JSON.stringify({debts, history})], {type: 'application/json'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = "fahad_debts.json";
-            a.click();
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+            a.download = "fahad_backup.json"; a.click();
         }
 
         function importData(e) {
@@ -303,13 +249,9 @@
             reader.readAsText(e.target.files[0]);
         }
 
-        function resetAllData() {
-            if(confirm("هل تريد مسح كل الحسابات؟ لا يمكن التراجع!")) {
-                debts = []; history = []; save();
-            }
-        }
+        function resetAll() { if(confirm("تصفير كل البيانات؟")) { debts=[]; history=[]; save(); } }
 
-        updateStats(); render();
+        render(); updateStats();
     </script>
 </body>
 </html>
