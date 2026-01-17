@@ -1,17 +1,15 @@
 {
-  "name": "شركة الفهد",
+  "name": "شركة الفهد POS",
   "short_name": "الفهد",
-  "description": "نظام إدارة ديون شركة الفهد",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#2c3e50",
-  "theme_color": "#2c3e50",
+  "background_color": "#4f46e5",
+  "theme_color": "#4f46e5",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/552/552791.png",
+      "src": "https://cdn-icons-png.flaticon.com/512/2897/2897821.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
